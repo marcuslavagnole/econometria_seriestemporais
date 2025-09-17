@@ -4,8 +4,8 @@
 
 ## Avaliação
 
-**Projeto Final** <br>
-**Prova**: <br>
+**Projeto** <br>
+**Prova** <br>
 **Nota Final**: 0.4 x Projeto Final + 0.6 x Prova <br>
 
 ## Notas de aula
