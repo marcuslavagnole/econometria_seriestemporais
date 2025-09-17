@@ -4,11 +4,21 @@
 
 ## Avaliação
 
-**Projeto** <br>
-**Prova** <br>
+**Projeto** (25/11 - 02/12 ou 18/11 - 02/12) <br>
+**Prova** (06/12) <br>
 **Nota Final**: 0.4 x Projeto Final + 0.6 x Prova <br>
 
 ## Notas de aula
+
+As notas de aula serão atualizadas à medida que o curso avançar.
+
+- Aula 1: Programação em R para finanças e Análise exploratória de dados;
+- Aula 2: Análise de séries temporais univariadas (ARIMA);
+- Aula 3: Análise de séries temporais multivariadas;
+- Aula 4: Modelos de volatilidade estocástica (GARCH);
+- Aula 5: Métodos econométricos avançados (testes de raiz unitária, cointegração e causalidade);
+- Aula 6: Modelos de espaço de estados;
+- Aula 7: Métodos de Machine Learning para séries temporais.
 
 ## Bibliografia
 
