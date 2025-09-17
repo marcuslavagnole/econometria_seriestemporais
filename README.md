@@ -4,8 +4,8 @@
 
 ## Avaliação
 
-**Projeto** (25/11 - 02/12 ou 18/11 - 02/12) <br>
-**Prova** (06/12) <br>
+**Projeto** (02/12: apresentações de 20-30 minutos) <br>
+**Prova**   (06/12) <br>
 **Nota Final**: 0.4 x Projeto Final + 0.6 x Prova <br>
 
 ## Notas de aula
