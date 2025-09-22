@@ -2,7 +2,7 @@
 
 **Ementa**: Programação em R para Finanças; Análise Exploratória de Dados; Análise de Séries Temporais Univariadas (ARIMA); Análise de Séries Temporais Multivariadas; Modelos de Volatilidade estocástica (GARCH); Métodos Econométricos Avançados (testes de raiz unitária, cointegração e causalidade); Modelos de Espaço de Estados; Métodos de Machine Learning para séries temporais.
 
-**Monitor**: Luis Felipe Marques ()
+**Monitor**: Luis Felipe Marques (lfamarques03@gmail.com)
 
 ## Avaliação
 
