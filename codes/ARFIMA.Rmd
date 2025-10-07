@@ -1,0 +1,65 @@
+---
+title: "ARFIMA"
+output: html_document
+date: "2025-10-07"
+---
+
+## ACF and PACF of ARFIMA data
+
+```{r}
+lag = 200
+k   = 2:lag
+ds  = c(0.2,0.49)
+par(mfrow=c(2,2))
+for (d in ds){
+  acf = c(d/(1-d),factorial(-d)/factorial(d-1)*k^(2*d-1))
+  pacf = c(d/(1-d),d/(k-d))
+  plot(c(1,k),acf,type="h",xlab="LAG")
+  title(paste("ACF for d=",d,sep=""))
+  plot(c(1,k),pacf,type="h",xlab="LAG",main="PACF")
+}
+```
+
+## Vazão anual do Rio Nilo 
+
+```{r}
+par(mfrow=c(1,1))
+plot(Nile)
+abline(v=1898,col=2)
+```
+
+### ACF and PACF
+
+```{r}
+par(mfrow=c(1,2))
+acf(Nile)
+pacf(Nile)
+```
+
+### Fit ARIMA and ARFIMA models
+
+```{r}
+library(forecast)
+fit1 = auto.arima(Nile)
+fit1
+```
+
+```{r}
+fit2 = arfima(Nile) 
+fit2
+```
+ 
+```{r}
+pred.arima=predict(fit1, 20)
+pred.arfima=predict(fit2, 20)
+
+par(mfrow=c(1,1))
+plot(pred.arfima)
+lines(pred.arima$pre,col=2,lwd=2)
+lines(pred.arima$pre-2*pred.arima$se,lty=2,col=2,lwd=2)
+lines(pred.arima$pre+2*pred.arima$se,lty=2,col=2,lwd=2)
+lines(pred.arima$pre-pred.arima$se,lty=3,col=2,lwd=2)
+lines(pred.arima$pre+pred.arima$se,lty=3,col=2,lwd=2)
+legend("bottomleft",legend=c("ARIMA(1,1,1)","ARFIMA (d=0.364)"),
+       col=c(2,4),lwd=2,bty="n")
+```
