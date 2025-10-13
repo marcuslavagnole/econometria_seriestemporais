@@ -1,3 +1,3 @@
 ### Observação:
 
-Some of the examples given here are based on materials available on the website of Professor [Hedibert Freitas Lopes](https://hedibert.org/).
+Alguns dos exemplos apresentados nesta pasta tomam como base o material disponível na página do Professor [Hedibert Freitas Lopes](https://hedibert.org/).
