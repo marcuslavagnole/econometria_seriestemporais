@@ -17,7 +17,7 @@ As notas de aula serão atualizadas à medida que o curso avançar.
 - [Aula 1](https://github.com/marcuslavagnole/econometria_seriestemporais/blob/main/slides/Aula1.pdf): Programação em R para finanças e Análise exploratória de dados;
 - [Aula 2](https://github.com/marcuslavagnole/econometria_seriestemporais/blob/main/slides/Aula2.pdf): Análise de séries temporais univariadas (ARIMA);
   - Lista: Questões 6.1, 6.3, 6.4, 6.8 e 6.14 da segunda edição do livro _Statistical Analysis of Financial Data in R_
-- Aula 3: Modelos de volatilidade estocástica (GARCH);
+- [Aula 3](https://github.com/marcuslavagnole/econometria_seriestemporais/blob/main/slides/Aula3.pdf): Modelos de volatilidade estocástica (GARCH);
 - Aula 4: Análise de séries temporais multivariadas;
 - Aula 5: Métodos econométricos avançados (testes de raiz unitária, cointegração e causalidade);
 - Aula 6: Modelos de espaço de estados;
