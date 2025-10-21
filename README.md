@@ -23,6 +23,11 @@ As notas de aula serão atualizadas à medida que o curso avançar.
 - Aula 6: Modelos de espaço de estados;
 - Aula 7: Métodos de Machine Learning para séries temporais.
 
+  Material complementar:
+
+  - [Elementos de Estatística Bayesiana](https://github.com/marcuslavagnole/econometria_seriestemporais/blob/main/slides/estatistica_bayesiana.pdf).
+  
+
 ## Bibliografia
 
 - CARMONA, R. Statistical Analysis of Financial Data in R. 2014
