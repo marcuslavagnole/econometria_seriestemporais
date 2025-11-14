@@ -1,0 +1,200 @@
+---
+title: "Retornos de ações - PETROBRAS"
+output:
+  pdf_document: default
+  html_document: default
+date: "2025-04-11"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r cars}
+# Pacotes necessários
+library(fGarch)
+library(rugarch)
+library(tidyquant)
+library(ggplot2)
+
+options(stringsAsFactors = FALSE)
+
+plot.sigt = function(y,sigt,model){
+  limy = range(abs(y),-abs(y))
+  par(mfrow=c(1,1))
+  plot(abs(y),xlab="Days",ylab="Log-returns (-/+)",main="",type="h",axes=FALSE,ylim=limy)
+  lines(-abs(y),type="h")
+  axis(2);box();axis(1,at=ind,lab=date)
+  lines(sigt,col=2)
+  lines(-sigt,col=2)
+  title(model)
+} 
+```
+
+## Petrobras stocks
+
+```{r}
+# Getting PBR data from August 10th 2000 to August 10th 2015.
+getSymbols("PBR",from='2000-08-10',to='2021-02-26',warnings=FALSE,auto.assign=TRUE)    
+```
+
+### Prices vs. Returns 
+
+```{r}
+n   = nrow(PBR)
+pbr = as.numeric(PBR[,6])      
+y   = diff(log(pbr))           
+ind = trunc(seq(1,n,length=8))
+date = c("Ago-00","Ago-03","Ago-06","Ago-09","Ago-12","Ago-15","Ago-18","")
+
+
+par(mfrow=c(1,2))
+plot(pbr,xlab="Dias",ylab="Preço",axes=FALSE,type="l")
+axis(2);axis(1,at=ind,lab=date);box()
+
+plot(y,xlab="Dias",ylab="Retorno",axes=FALSE,type="l")
+axis(2);axis(1,at=ind,lab=date);box()
+```
+
+
+## Gaussian models
+
+### Autoregressive conditional heteroskedasticity (ARCH)
+
+```{r}
+fit.arch  = garchFit(~garch(1,0),data=y,trace=F,include.mean=FALSE)
+
+fit.arch@fit$matcoef
+```
+
+```{r}
+plot.sigt(y,fit.arch@sigma.t,"ARCH(1)")
+```
+
+### Generalized autoregressive conditional heteroskedasticity (GARCH)
+
+```{r}
+fit.garch = garchFit(~garch(1,1),data=y,trace=F,include.mean=F) 
+
+fit.garch@fit$matcoef
+```
+
+```{r}
+plot.sigt(y,fit.garch@sigma.t,"GARCH(1,1)")
+```
+
+### Threshold GARCH (T-GARCH)
+
+```{r}
+fit.tgarch = garchFit(~garch(1,1),delta=1,leverage=T,data=y,trace=F,include.mean=F)
+
+fit.tgarch@fit$matcoef
+```
+
+```{r}
+plot.sigt(y,fit.tgarch@sigma.t,"Threshold-GARCH(1,1)")
+```
+
+### Glosten-Jaganathan-Runkle GARCH (GJR-GARCH)
+
+```{r}
+fit.gjrgarch = garchFit(~garch(1,1),delta=2,leverage=T,data=y,trace=F,include.mean=F)
+
+fit.gjrgarch@fit$matcoef
+```
+
+```{r}
+plot.sigt(y,fit.gjrgarch@sigma.t,"GJR-GARCH(1,1)")
+```
+
+### Exponential GARCH (EGARCH)
+
+```{r}
+fit=ugarchfit(ugarchspec(mean.model=list(armaOrder=c(0,0),include.mean=TRUE,archm=FALSE,archpow=1,arfima=FALSE,external.regressors=NULL,archex=FALSE),variance.model=list(model="eGARCH",garchOrder=c(1,1),submodel=NULL,external.regressors=NULL, variance.targeting = FALSE)),y)
+
+fit
+```
+
+```{r}
+egarch.sigma.t = as.vector(sigma(fit)[,1])
+
+plot.sigt(y,egarch.sigma.t,"EGARCH(1,1)")
+```
+
+### Comparing estimates
+
+```{r}
+sigma.t = cbind(fit.garch@sigma.t,
+                fit.tgarch@sigma.t,
+                fit.gjrgarch@sigma.t,
+                egarch.sigma.t)
+
+limy=range(sigma.t)
+
+par(mfrow=c(1,1))
+plot(sigma.t[,1],xlab="Days",ylab="Standard deviation",main="",type="l",ylim=limy,axes=FALSE)
+axis(2);box();axis(1,at=ind,lab=date)
+for (i in 2:4)
+  lines(sigma.t[,i],col=i)
+  legend("topleft",col=1:4,lty=1,
+          legend=c("GARCH","T-GARCH","GJR-GARCH","EGARCH"))
+```
+
+## Non-Gaussian models
+
+### GARCH(1,1) with Student-t with degrees of freedom (shape) estimated
+
+```{r}
+fit.garch.std = garchFit(~garch(1,1),cond.dist="std",data=y,trace=F,include.mean=F)
+
+fit.garch.std@fit$matcoef
+```
+
+```{r}
+plot.sigt(y,fit.garch.std@sigma.t,"GARCH(1,1) with Student-t errors")
+```
+
+### GARCH(1,1) with skewed Student-t with degrees of freedom (shape) and skewness estimated
+
+```{r}
+fit.garch.sstd = garchFit(~garch(1,1),cond.dist="sstd",data=y,trace=F,include.mean=F)
+
+fit.garch.sstd@fit$matcoef
+```
+
+```{r}
+plot.sigt(y,fit.garch.sstd@sigma.t,"GARCH(1,1) with skewed Student-t errors")
+```
+
+
+### GARCH(1,1) with Laplace (a GED with shape fixed at 1)
+
+```{r}
+fit.garch.ged = garchFit(~garch(1,1),cond.dist="ged",shape=1,include.shape=F,data=y,trace=F,include.mean=F)
+
+fit.garch.ged@fit$matcoef
+```
+
+```{r}
+plot.sigt(y,fit.garch.ged@sigma.t,"GARCH(1,1) with GED errors")
+```
+
+### Comparing estimates
+
+```{r}
+sigma.t = cbind(fit.garch@sigma.t,
+                fit.garch.std@sigma.t,
+                fit.garch.sstd@sigma.t,
+                fit.garch.ged@sigma.t)
+
+limy=range(sigma.t)
+
+par(mfrow=c(1,1))
+plot(sigma.t[,1],xlab="Days",ylab="Standard deviation",main="",type="l",ylim=limy,axes=FALSE)
+axis(2);box();axis(1,at=ind,lab=date)
+lines(sigma.t[,1],col=2)
+lines(sigma.t[,2],col=3)
+lines(sigma.t[,3],col=4)
+lines(sigma.t[,4],col=5)
+legend("topleft",legend=c("GARCH","GARCH t","GARCH st","GARCH GED"),col=1:5,lty=1)
+```
