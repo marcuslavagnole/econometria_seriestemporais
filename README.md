@@ -24,6 +24,7 @@ As notas de aula serão atualizadas à medida que o curso avançar.
 - Aula 6: Métodos de Machine Learning para séries temporais.
   - Long Short-Term Memory (LSTM) - Iago;
   - XGBoost/CatBoost - João Abreu;
+  - Transfer learning - Julio;
   - Conformal prediction - João Vitor;
   - Path signatures - Lucas.
 <!---
