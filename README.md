@@ -22,7 +22,7 @@ As notas de aula serão atualizadas à medida que o curso avançar.
 - Aula 4: Análise de séries temporais multivariadas;
 - Aula 5: Modelos de espaço de estados;
 - Aula 6: Métodos de Machine Learning para séries temporais.
-- - Long Short-Term Memory (LSTM) - Iago;
+  - Long Short-Term Memory (LSTM) - Iago;
   - XGBoost/CatBoost - João Abreu;
   - Conformal prediction - João Vitor;
   - Path signatures - Lucas.
