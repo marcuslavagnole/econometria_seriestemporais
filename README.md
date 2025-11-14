@@ -20,13 +20,13 @@ As notas de aula serão atualizadas à medida que o curso avançar.
 - [Aula 3](https://github.com/marcuslavagnole/econometria_seriestemporais/blob/main/aulas/Aula3.pdf): Modelos de volatilidade estocástica (GARCH);
   - Lista: Exercícios 8.1 e 8.2 da segunda edição do livro _Statistical Analysis of Financial Data in R_; Exercícios 5.6 e 5.7 da quarta edição do livro _Time Series Analysis and Its Applications: With R Examples_
 - Aula 4: Análise de séries temporais multivariadas;
+- Aula 5: Modelos de espaço de estados;
+- Aula 6: Métodos de Machine Learning para séries temporais.
 <!---
 - Aula 5: Métodos econométricos avançados (testes de raiz unitária, cointegração e causalidade);
 - Aula 6: Modelos de espaço de estados;
 - Aula 7: Métodos de Machine Learning para séries temporais.
 --->
-- Aula 5: Modelos de espaço de estados;
-- Aula 6: Métodos de Machine Learning para séries temporais.
 
 ## Material Complementar
 
