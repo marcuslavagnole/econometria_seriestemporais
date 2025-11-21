@@ -6,7 +6,7 @@
 
 ## Avaliação
 
-**Projeto** (02/12: apresentações de 30-40 minutos) <br>
+**Projeto** (01/12 e 02/12: apresentações de 30-40 minutos) <br>
 **Prova**   (06/12) <br>
 **Nota Final**: 0.5 x Projeto Final + 0.5 x Prova <br>
 
