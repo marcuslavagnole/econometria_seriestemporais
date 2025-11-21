@@ -19,9 +19,10 @@ As notas de aula serão atualizadas à medida que o curso avançar.
   - Lista: Exercícios 6.1, 6.3, 6.4, 6.8 e 6.14 da segunda edição do livro _Statistical Analysis of Financial Data in R_
 - [Aula 3](https://github.com/marcuslavagnole/econometria_seriestemporais/blob/main/aulas/Aula3.pdf): Modelos de volatilidade estocástica (GARCH);
   - Lista: Exercícios 8.1 e 8.2 da segunda edição do livro _Statistical Analysis of Financial Data in R_; Exercícios 5.6 e 5.7 da quarta edição do livro _Time Series Analysis and Its Applications: With R Examples_
-- [Aula 4](https://github.com/marcuslavagnole/econometria_seriestemporais/blob/main/aulas/Aula3.pdf): Análise de séries temporais multivariadas;
-- Aula 5: Modelos de espaço de estados;
-- Aula 6: Métodos de Machine Learning para séries temporais.
+- [Aula 4](https://github.com/marcuslavagnole/econometria_seriestemporais/blob/main/aulas/Aula4.pdf): Elementos de Estatística Bayesiana;
+- [Aula 5](https://github.com/marcuslavagnole/econometria_seriestemporais/blob/main/aulas/Aula5.pdf): Análise de séries temporais multivariadas;
+- Aula 6: Modelos de espaço de estados;
+- Aula 7: Métodos de Machine Learning para séries temporais.
   - Long Short-Term Memory (LSTM) - Iago;
   - XGBoost/CatBoost - João Abreu;
   - Transfer learning - Julio;
@@ -32,10 +33,6 @@ As notas de aula serão atualizadas à medida que o curso avançar.
 - Aula 6: Modelos de espaço de estados;
 - Aula 7: Métodos de Machine Learning para séries temporais.
 --->
-
-## Material Complementar
-
-- [Elementos de Estatística Bayesiana](https://github.com/marcuslavagnole/econometria_seriestemporais/blob/main/aulas/estatistica_bayesiana.pdf).
   
 ## Bibliografia
 
