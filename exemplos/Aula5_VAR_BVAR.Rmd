@@ -1,0 +1,212 @@
+---
+title: "VAR e VAR Bayesiano"
+output:
+  pdf_document: default
+  html_document: default
+date: "2025-24-11"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r cars}
+# Pacotes necessários
+library(fGarch)
+library(rugarch)
+library(tidyquant)
+library(ggplot2)
+
+options(stringsAsFactors = FALSE)
+
+plot.sigt = function(y,sigt,model){
+  limy = range(abs(y),-abs(y))
+  par(mfrow=c(1,1))
+  plot(abs(y),xlab="Days",ylab="Log-returns (-/+)",main="",type="h",axes=FALSE,ylim=limy)
+  lines(-abs(y),type="h")
+  axis(2);box();axis(1,at=ind,lab=date)
+  lines(sigt,col=2)
+  lines(-sigt,col=2)
+  title(model)
+} 
+```
+
+## Quartelry growth rates (%) Real gross domestic product (GDP) of United Kingdom, Canada, and USA
+
+The data were seasonally adjusted and downloaded from the database of Federal Reserve Bank of St. Louis.  The GDP were in millions of local currency, and the growth rate denotes the differenced series of log DGP.
+
+```{r}
+# Getting data from the second quarter of 1980 to the second quarter of 2011
+data  = read.table("https://www.math.ttu.edu/~atrindad/tsdata/FTSdatasets/q-gdp-ukcaus.txt",header=TRUE)
+n     = nrow(data)
+date  = data[,1]+data[,2]/12
+gdps  = log(data[,3:5])
+rates = gdps[2:126,] - gdps[1:125,]
+rates = 100*rates
+q     = ncol(rates) 
+```
+
+### Exploratory data analysis
+
+```{r}
+par(mfrow=c(3,3))
+plot(date,gdps[,1],type="l",xlab="",ylab="Log real DGP",main="United Kingdom")
+plot(date,gdps[,2],type="l",xlab="",ylab="Log real DGP",main="Canada")
+plot(date,gdps[,3],type="l",xlab="",ylab="Log real DGP",main="United States")
+plot(date[2:n],rates[,1],type="l",xlab="",ylab="Growth rate")
+plot(date[2:n],rates[,2],type="l",xlab="",ylab="Growth rate")
+plot(date[2:n],rates[,3],type="l",xlab="",ylab="Growth rate")
+acf(rates[,1],main="")
+acf(rates[,2],main="")
+acf(rates[,3],main="")
+```
+
+
+### Scatter plots and correlations
+
+```{r}
+par(mfrow=c(1,3))
+plot(rates[,1],rates[,2],xlab="Growth rate - UK",ylab="Growth rate (Canada)")
+abline(lm(rates[,2]~rates[,1])$coef,col=2)
+title(paste("Correlation = ",round(cor(rates[,1],rates[,2]),3),sep=""))
+plot(rates[,1],rates[,3],xlab="Growth rate - UK",ylab="Growth rate (US)")
+abline(lm(rates[,3]~rates[,1])$coef,col=2)
+title(paste("Correlation = ",round(cor(rates[,1],rates[,3]),3),sep=""))
+plot(rates[,2],rates[,3],xlab="Growth rate - Canada",ylab="Growth rate (US)")
+abline(lm(rates[,3]~rates[,2])$coef,col=2)
+title(paste("Correlation = ",round(cor(rates[,2],rates[,3]),3),sep=""))
+```
+
+
+## VAR(2) via OLS (step-by-step)
+
+```{r}
+p     = 2
+n     = nrow(rates)
+y     = rates[(p+1):n,]
+y     = as.matrix(y)
+const = rep(1,n-p)
+lag1  = rates[p:(n-1),]
+lag2  = rates[(p-1):(n-2),]
+X     = cbind(const,lag1,lag2)
+X     = as.matrix(X)
+XtX   = t(X)%*%X
+iXtX  = solve(XtX)
+Xty   = t(X)%*%y
+bhat  = iXtX%*%Xty
+B     = c(bhat[,1],bhat[,2],bhat[,3])
+A     = y - X%*%bhat
+Smle  = t(A)%*%A/(n-p)
+
+Cov  = kronecker(Smle,iXtX)
+seB  = sqrt(diag(Cov))
+para = cbind(B,seB,round(2*(1-pnorm(abs(B)/seB)),3))
+colnames(para) = c("beta","std error","p-value")
+
+para
+```
+
+```{r}
+Smle
+```
+
+## Impulse response function
+
+```{r}
+B1 = t(bhat[2:(q+1),])
+B2 = t(bhat[(q+2):(p*q+1),])
+
+h = 11
+Psi = array(0,c(h,q,q))
+Psi[1,,] = diag(1,q)
+Psi[2,,] = B1
+for (i in 3:h)
+  Psi[i,,] = B1%*%Psi[i-1,,]+B2%*%Psi[i-2,,]
+ 
+names = c("United Kingdom","Canada","United States")
+par(mfrow=c(1,q))
+for (j in 1:q){
+    plot(0:(h-1),Psi[,1,j],ylim=range(Psi),type="b",col=1:3,main=paste("Shock in ",names[j],sep=""),
+    ylab="Response",xlab="horizon")
+    lines(0:(h-1),Psi[,2,j],col=2,type="b")
+    lines(0:(h-1),Psi[,3,j],col=3,type="b")
+    abline(h=0,lty=2)
+}
+legend("topright",legend=names,col=1:3,lty=1)    
+```
+
+
+## VAR(2) via MLE (Ruey Tsay's MTS package) 
+
+```{r}
+install.packages("MTS")
+library(MTS)
+
+mle.fit = VAR(rates,2)
+```
+
+### VAR order selection
+
+```{r}
+rates1 = rates/100
+order = VARorder(rates1)
+
+par(mfrow=c(1,1))
+plot(order$aic,xlab="Order",ylab="Value",type="b",pch=16,ylim=c(-32,-29))
+lines(order$bic,pch=16,col=2,type="b")
+lines(order$hq,pch=16,col=4,type="b")
+legend("topleft",legend=c("AIC","BIC","HQ"),col=c(1,2,4),lty=1,pch=16)
+```
+
+
+## Bayesian VAR
+
+```{r}
+set.seed(42) 
+install.packages("BVAR")
+library("BVAR")
+
+x <- fred_qd[1:243, c("GDPC1", "PCECC96", "GPDIC1",  "HOANBS", "GDPCTPI", "FEDFUNDS")]
+x <- fred_transform(x, codes = c(4, 4, 4, 4, 4, 1))
+
+par(mfrow=c(2,3))
+for (i in 1:6){ ts.plot(x[,i]) }
+```
+
+### Prior specification
+
+```{r}
+mn  <- bv_minnesota(lambda = bv_lambda(mode = 0.2, sd = 0.4, min = 0.0001, max = 5), alpha = bv_alpha(mode = 2), var = 1e07)
+soc <- bv_soc(mode = 1, sd = 1, min = 1e-04, max = 50)
+sur <- bv_sur(mode = 1, sd = 1, min = 1e-04, max = 50)
+priors <- bv_priors(hyper = "auto", mn = mn, soc = soc, sur = sur)
+```
+
+### Fitting BVAR
+
+```{r}
+mh <- bv_metropolis(scale_hess = c(0.05, 0.0001, 0.0001), adjust_acc = TRUE, acc_lower = 0.25, acc_upper = 0.45)
+
+run <- bvar(x, lags = 5, n_draw = 50000, n_burn = 25000, n_thin = 1, priors = priors, mh = mh, verbose = TRUE)
+
+print(run)
+```
+
+```{r}
+plot(run)
+```
+
+### Impulse response functions 
+
+```{r}
+opt_irf <- bv_irf(horizon = 16, identification = TRUE)
+irf(run) <- irf(run, opt_irf, conf_bands = c(0.05, 0.16)) 
+plot(irf(run), area = TRUE, vars_impulse = c("GDPC1", "FEDFUNDS"), vars_response = c(1:2, 6))
+```
+
+### Forecast
+
+```{r}
+predict(run) <- predict(run, horizon = 16, conf_bands = c(0.05, 0.16))
+plot(predict(run), area = TRUE, t_back = 32, vars = c("GDPC1", "GDPCTPI", "FEDFUNDS"))
+```
