@@ -1,5 +1,5 @@
 ---
-title: "Retornos de ações - PETROBRAS"
+title: "Modelos de volatilidade estocástica (GARCH)"
 output:
   pdf_document: default
   html_document: default
@@ -198,3 +198,4 @@ lines(sigma.t[,3],col=4)
 lines(sigma.t[,4],col=5)
 legend("topleft",legend=c("GARCH","GARCH t","GARCH st","GARCH GED"),col=1:5,lty=1)
 ```
+
