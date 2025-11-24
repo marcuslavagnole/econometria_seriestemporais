@@ -20,7 +20,14 @@ As notas de aula serão atualizadas à medida que o curso avançar.
 - [Aula 3](https://github.com/marcuslavagnole/econometria_seriestemporais/blob/main/aulas/Aula3.pdf): Modelos de volatilidade estocástica (GARCH);
   - Lista: Exercícios 8.1 e 8.2 da segunda edição do livro _Statistical Analysis of Financial Data in R_; Exercícios 5.6 e 5.7 da quarta edição do livro _Time Series Analysis and Its Applications: With R Examples_
 - [Aula 4](https://github.com/marcuslavagnole/econometria_seriestemporais/blob/main/aulas/Aula4.pdf): Elementos de Estatística Bayesiana;
+<!---
+Esta aula precisa ser revisada. Principalmente, a parte computacional (notação ruim e MH está bem confuso)
+Aqui seria interessante acrescentar exemplos de AR, MA, ARMA e GARCH Bayesiano
+---> 
 - [Aula 5](https://github.com/marcuslavagnole/econometria_seriestemporais/blob/main/aulas/Aula5.pdf): Análise de séries temporais multivariadas;
+- <!---
+Esta aula precisa ser melhorada (análise impulso resposta e parte bayesiana, principalmente)
+---> 
 - Aula 6: Modelos de espaço de estados;
 - Aula 7: Métodos de Machine Learning para séries temporais.
   - Long Short-Term Memory (LSTM) - Iago;
