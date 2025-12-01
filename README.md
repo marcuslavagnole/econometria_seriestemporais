@@ -34,7 +34,7 @@ As notas de aula serão atualizadas à medida que o curso avançar.
   <!---
     Esta aula precisa ser melhorada (análise impulso resposta e parte bayesiana, principalmente)
   ---> 
-- Aula 6: Modelos de espaço de estados;
+- [Aula 6](https://github.com/marcuslavagnole/econometria_seriestemporais/blob/main/aulas/Aula6.pdf): Modelos de espaço de estados;
 - Aula 7: Métodos de Machine Learning para séries temporais.
   - Long Short-Term Memory (LSTM) - Iago;
   - XGBoost/CatBoost - João Abreu;
